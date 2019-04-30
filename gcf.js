@@ -60,7 +60,6 @@ const resultsFound = {
 
 let createUser = (req,res)=>{
     connection.getConnection(function(err,connection){
-        if(err) throw err;
         bcrypt.hash(req.body.inputPassword,saltRounds,function(err,hash){
             const sql = 'INSERT INTO users SET ?'; //sql query for process
             const values = {
@@ -77,14 +76,12 @@ let createUser = (req,res)=>{
                 }
             })
             connection.release();
-            if(err) throw err;
         })
     })
 }
 var email
 let loginUser = (req,res)=>{
     connection.getConnection(function(err,connection){
-        if(err) throw err;
         const sql = 'SELECT * FROM users WHERE `email`=?'; //sql query for process
         const values = [req.body.inputEmail];
         email = values[0];
@@ -117,14 +114,12 @@ let loginUser = (req,res)=>{
                 }
             });
             connection.release();
-            if(error) throw error;
         });
     })
 }
 
 let changePassword = (req,res)=>{
     connection.getConnection(function(err,connection){
-        if(err) throw err;
         bcrypt.hash(req.body.inputPassword,saltRounds,function(err,hash){
             const sql = 'UPDATE login SET password ? WHERE `userID` = ?'
             const values = {
@@ -140,13 +135,11 @@ let changePassword = (req,res)=>{
                 }
             })
             connection.release();
-            if(err) throw err;
         })
     })
 }
 let getPosts = (req,res)=>{
     connection.getConnection(function(req,res){
-        if(err) throw err;
         const sql = 'SELECT * FROM posts';
         connection.query(sql,function(error,results,fields){
             if(error){
@@ -163,12 +156,10 @@ let getPosts = (req,res)=>{
            
         })
         connection.release();
-        if(err) throw err;
     })
 }
 let addPost = (req,res)=>{
     connection.getConnection(function(err,connection){
-        if(err) throw err;
         const sql = 'INSERT INTO post SET ?'; //sql query for process
         const values = {
             postTitle: req.body.postTitle,
@@ -187,12 +178,10 @@ let addPost = (req,res)=>{
             }
         })
         connection.release();
-        if(err) throw err;
     })
 }
 let getEvents = (req,res)=>{
     connection.getConnection(function(req,res){
-        if(err) throw err;
         const sql = 'SELECT * FROM events';
         connection.query(sql,function(error,results,fields){
             if(error){
@@ -209,12 +198,10 @@ let getEvents = (req,res)=>{
            
         })
         connection.release();
-        if(err) throw err;
     })
 }
 let addEvent = (req,res) => {
     connection.getConnection(function(req,res){
-        if(err) throw err;
         const sql = 'INSERT INTO events SET ?';
         const values = {
             eventName: req.body.eventName,
@@ -231,7 +218,6 @@ let addEvent = (req,res) => {
             }
         })
         connection.release();
-        if(err) throw err;
     })
 }
 let getDate = function(){
@@ -239,7 +225,6 @@ let getDate = function(){
 }
 let getUserID = (req,res) => {
     connection.getConnection(function(req,res){
-        if(err) throw err;
         const sql = 'SELECT `userID` FROM users WHERE `email` = ?'
         const values = email;
         connection.query(sql,values,function(error,results,fields){
@@ -252,6 +237,5 @@ let getUserID = (req,res) => {
             }
         })
         connection.release();
-        if(err) throw err;
     })
 }
