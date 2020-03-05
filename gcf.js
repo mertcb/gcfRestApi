@@ -24,18 +24,18 @@ exports.restApi = (req,res) => {
             addEvent(req,res);
             break;
         default:
-            res.status(200).send('welcome to trackyo');
+            res.status(200).send('Hello World!');
     }
 }
 
 const mysql = require('mysql2');
 let config = {
-    user: 'root',
-    password: 'dbConnector',
-    database: 'trackyoBlog',
-    host: '35.240.17.235'
+    user: 'xxx',
+    password: 'xxx',
+    database: 'xxx',
+    host: 'xxx'
 }
-const connectionName = 'bilgindemo:europe-west1:database'
+const connectionName = 'xxx:europe-west1:xxx'
 if(process.env.NODE_ENV === 'production'){
     config.socketPath = `/cloudsql/${connectionName}`;
 }
@@ -46,14 +46,14 @@ const jwt = require('jsonwebtoken');
 
 const resultsNotFound = { 
     "errorCode": "0",
-    "errorMessage": "İşlem başarısız",
+    "errorMessage": "operation failed",
     "rowCount": "0",
     "data": ""
 }
 
 const resultsFound = {
     "errorCode": "1",
-    "errorMessage": "İşlem başarılı",
+    "errorMessage": "operation succeed",
     "rowCount": "1",
     "data": ""
 }
@@ -68,7 +68,7 @@ let createUser = (req,res)=>{
             }
             connection.query(sql,values,function(error,results,fields){
                 if(error){
-                    resultsNotFound["errorMessage"] = "Bu email adresi zaten kayıtlı"
+                    resultsNotFound["errorMessage"] = "this email is already registered."
                     return res.send(resultsNotFound);
                 }
                 else{
@@ -87,11 +87,11 @@ let loginUser = (req,res)=>{
         email = values[0];
         connection.query(sql,values,function(error,results,fields){
             if(error){
-                resultsNotFound["errorMessage"] = "Sunucuda bir şeyler ters gitti";
+                resultsNotFound["errorMessage"] = "An error occured";
                 return res.send(resultsNotFound)
             }
             if(results == ""){
-                resultsNotFound["errorMessage"] = "Böyle bir kullanıcı bulunamadı"
+                resultsNotFound["errorMessage"] = "There is no user like that."
                 return res.send(resultsNotFound)
             }
             bcrypt.compare(req.body.inputPassword, results[0].password, function(err,result){
@@ -109,7 +109,7 @@ let loginUser = (req,res)=>{
                     res.send(resultsFound);
                 }
                 else{
-                    resultsNotFound["errorMessage"] = "Şifreniz yanlış"
+                    resultsNotFound["errorMessage"] = "Incorrect Password"
                     return res.send(resultsNotFound);
                 }
             });
@@ -127,7 +127,7 @@ let changePassword = (req,res)=>{
             }
             connection.query(sql,values,function(error,results,fields){
                 if(error){
-                    resultsNotFound["errorMessage"] = "Şifreniz eski şifreniz olamaz"
+                    resultsNotFound["errorMessage"] = "Your new password is cannot be your old password"
                     return res.send(resultsNotFound);
                 }
                 else{
@@ -143,11 +143,11 @@ let getPosts = (req,res)=>{
         const sql = 'SELECT * FROM posts';
         connection.query(sql,function(error,results,fields){
             if(error){
-                resultsNotFound["errorMessage"] = "Sunucuda bir şeyler ters gitti";
+                resultsNotFound["errorMessage"] = "An error occured";
                 return res.send(resultsNotFound)
             }
             if(results == ''){
-                resultsNotFound["errorMessage"] = "Post bulunamadı";
+                resultsNotFound["errorMessage"] = "Post doesn't exist.";
                 return res.send(resultsNotFound);
             }
             else{
@@ -170,7 +170,7 @@ let addPost = (req,res)=>{
         }
         connection.query(sql,values,function(error,results,fields){
             if(error){
-                resultsNotFound["errorMessage"] = "Sunucuda bir şeyler yanlış gitti."
+                resultsNotFound["errorMessage"] = "An error occured."
                 return res.send(resultsNotFound);
             }
             else{
@@ -185,11 +185,11 @@ let getEvents = (req,res)=>{
         const sql = 'SELECT * FROM events';
         connection.query(sql,function(error,results,fields){
             if(error){
-                resultsNotFound["errorMessage"] = "Sunucuda bir şeyler ters gitti";
+                resultsNotFound["errorMessage"] = "An error occured";
                 return res.send(resultsNotFound)
             }
             if(results == ''){
-                resultsNotFound["errorMessage"] = "Etkinlik bulunamadı";
+                resultsNotFound["errorMessage"] = "Event doesn't exist";
                 return res.send(resultsNotFound);
             }
             else{
@@ -210,7 +210,7 @@ let addEvent = (req,res) => {
         }
         connection.query(sql,values,function(error,results,fields){
             if(error){
-                resultsNotFound["errorMessage"] = "Sunucuda bir şeyler yanlış gitti."
+                resultsNotFound["errorMessage"] = "An error occured."
                 return res.send(resultsNotFound);
             }
             else{
@@ -229,7 +229,7 @@ let getUserID = (req,res) => {
         const values = email;
         connection.query(sql,values,function(error,results,fields){
             if(error){
-                resultsNotFound["errorMessage"] = "Sunucuda bir şeyler yanlış gitti"
+                resultsNotFound["errorMessage"] = "An error occured"
                 return res.send(resultsNotFound);
             }
             else{
